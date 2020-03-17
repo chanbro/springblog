@@ -1,10 +1,8 @@
 package com.codeup.springblog.models;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +16,10 @@ public class Post {
         this.id = id;
         this.title = title;
         this.description = description;
+    }
+
+    public Post(){
+
     }
 
     public long getId() {
