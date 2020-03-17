@@ -1,30 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>View All Posts</title>
-    <th:block th:replace="partials/header :: main-header(false)"/>
+    <title>All Posts</title>
 </head>
 <body>
-
-<div th:replace="partials/navbar :: main-navbar"></div>
-
-<div class="container">
-
-    <header class="jumbotron my-3">
-        <h1 class="display-3 text-center">Posts</h1>
-    </header>
-
-    <div class="card p-3 my-3" th:each="post : ${posts}">
-        <a th:href="@{'posts/' + ${post.id}}">
-            <h1 th:text="${post.title}"></h1>
-            <p th:text="${post.description}"></p>
-        </a>
-    </div>
-
+<div th:each="post : ${posts}">
+    <h1 th:text = "${post.title}"></h1>
+    <p th:text = "${post.body}"></p>
 </div>
-
-
-<th:block th:replace="partials/scripts :: scripts"/>
 </body>
 </html>
