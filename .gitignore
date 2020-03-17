@@ -32,3 +32,4 @@ build/
 
 #Curriculum
 src/main/resources/application.properties
+migration.sql

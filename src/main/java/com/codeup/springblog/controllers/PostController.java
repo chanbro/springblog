@@ -1,27 +1,37 @@
 package com.codeup.springblog.controllers;
 
+import com.codeup.springblog.models.Post;
+import com.codeup.springblog.repositories.PostRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class PostController {
 
+    private final PostRepository postDao;
+
+    public PostController(PostRepository postDao) {
+        this.postDao = postDao;
+    }
+
     @GetMapping("/posts")
-    @ResponseBody
-    public String getPosts(){
-        return "posts index page";
+    public String getPosts(Model model){
+        model.addAttribute("posts", postDao.findAll());
+        return "posts/index";
     }
 
     @GetMapping("/posts/{id}")
-    @ResponseBody
-    public String getPost(@PathVariable int id){
-        return "view an individual post, id="+id;
+    public String getPost(@PathVariable long id, Model model){
+        model.addAttribute("post", postDao.getOne(id));
+        return "posts/show";
     }
 
     @GetMapping("/posts/create")
     @ResponseBody
-    public String getCreatePostForm(){
-        return "view the form for creating a post";
+    public String getCreatePostForm(Model model){
+        model.addAttribute("post" , new Post());
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
@@ -30,9 +40,20 @@ public class PostController {
         return "create a new post";
     }
 
-    @RequestMapping(path="/posts", method=RequestMethod.DELETE)
+
+    @GetMapping("/posts/update")
     @ResponseBody
-    public String delete(){
-        return "DELETE!!";
+    public String updatePost(){
+        Post post = postDao.getOne(1L);
+        post.setTitle("Great Horned Owl");
+        postDao.save(post);
+        return "Updating post";
+    }
+
+    @PostMapping("/posts/{id}/delete")
+    @ResponseBody
+    public String deletePost(@PathVariable long id) {
+        postDao.deleteById(id);
+        return "redirect:/posts";
     }
 }
