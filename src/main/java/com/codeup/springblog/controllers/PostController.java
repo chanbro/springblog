@@ -6,8 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @Controller
 public class PostController {
 
@@ -16,16 +14,6 @@ public class PostController {
     public PostController(PostRepository postDao) {
         this.postDao = postDao;
     }
-
-//    @GetMapping("/posts")
-//    public String getPosts(Model model){
-//        ArrayList<Post> postList = new ArrayList<>();
-//        postList.add(new Post(2, "Second Post", "askdfhkashdfkjahsdf"));
-//        postList.add(new Post(3, "Third Post", "some more text..."));
-//
-//        model.addAttribute("posts", postList);
-//        return "posts/index";
-//    }
 
     @GetMapping("/posts")
     public String getPosts(Model model){
@@ -57,12 +45,13 @@ public class PostController {
     @ResponseBody
     public String updatePost(){
         Post post = postDao.getOne(1L);
-        post.setTitle("Updated Title Worked!");
+        post.setTitle("Great Horned Owl");
         postDao.save(post);
         return "Updating post";
     }
 
     @PostMapping("/posts/{id}/delete")
+    @ResponseBody
     public String deletePost(@PathVariable long id) {
         postDao.deleteById(id);
         return "redirect:/posts";
