@@ -2,7 +2,6 @@ package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Post;
 import com.codeup.springblog.repositories.PostRepository;
-import com.codeup.springblog.repositories.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,28 +12,30 @@ import java.util.ArrayList;
 public class PostController {
 
     private final PostRepository postDao;
-    private final UserRepository userDao;
 
-    public PostController(PostRepository postDao, UserRepository userDao) {
+    public PostController(PostRepository postDao) {
         this.postDao = postDao;
-        this.userDao = userDao;
     }
+
+//    @GetMapping("/posts")
+//    public String getPosts(Model model){
+//        ArrayList<Post> postList = new ArrayList<>();
+//        postList.add(new Post(2, "Second Post", "askdfhkashdfkjahsdf"));
+//        postList.add(new Post(3, "Third Post", "some more text..."));
+//
+//        model.addAttribute("posts", postList);
+//        return "posts/index";
+//    }
 
     @GetMapping("/posts")
     public String getPosts(Model model){
-        ArrayList<Post> postList = new ArrayList<>();
-        postList.add(new Post(2, "Second Post", "askdfhkashdfkjahsdf"));
-        postList.add(new Post(3, "Third Post", "some more text..."));
-
-        model.addAttribute("posts", postList);
+        model.addAttribute("posts", postDao.findAll());
         return "posts/index";
     }
 
     @GetMapping("/posts/{id}")
-    public String getPost(@PathVariable int id, Model model){
-        Post post1 = new Post(id, "Europa's First Post", "Remote Learning Today!");
-        model.addAttribute("title", post1.getTitle());
-        model.addAttribute("body", post1.getBody());
+    public String getPost(@PathVariable long id, Model model){
+        model.addAttribute("post", postDao.getOne(id));
         return "posts/show";
     }
 
