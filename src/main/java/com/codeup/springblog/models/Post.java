@@ -10,12 +10,12 @@ public class Post {
     @Column(nullable = false, length = 200)
     private String title;
     @Column(nullable = false)
-    private String description;
+    private String body;
 
-    public Post(long id, String title, String description){
+    public Post(long id, String title, String body){
         this.id = id;
         this.title = title;
-        this.description = description;
+        this.body = body;
     }
 
     public Post(){
@@ -38,11 +38,11 @@ public class Post {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBody() {
+        return body;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBody(String body) {
+        this.body = body;
     }
 }
