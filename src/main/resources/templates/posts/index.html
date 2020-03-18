@@ -9,6 +9,7 @@
 <div th:each="post : ${posts}">
     <h1 th:text = "${post.title}"></h1>
     <p th:text = "${post.body}"></p>
+    <a th:href="@{|posts/${post.id}|}">See More</a>
     <a th:href="@{|posts/${post.id}/edit|}">Edit</a>
 <!--    th: attribute required for Spring security in later lessons-->
     <form th:action="@{|posts/${post.id}/delete|}" th:method="POST">
