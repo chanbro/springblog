@@ -23,14 +23,14 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable long id, Model model){
-        model.addAttribute("post", postDao.getOne(id));
+        model.addAttribute("posts", postDao.getOne(id));
         return "posts/show";
     }
 
     @GetMapping("/posts/create")
     @ResponseBody
     public String getCreatePostForm(Model model){
-        model.addAttribute("post" , new Post());
+        model.addAttribute("posts" , new Post());
         return "posts/create";
     }
 
@@ -48,6 +48,22 @@ public class PostController {
         post.setTitle("Great Horned Owl");
         postDao.save(post);
         return "Updating post";
+    }
+
+    @GetMapping("/posts/{id}/edit")
+    public String editForm(@PathVariable long id, Model model) {
+        Post postToEdit = postDao.getOne(id);
+        model.addAttribute("post", postToEdit);
+        return "posts/edit";
+    }
+
+    @PostMapping("/posts/{id}/edit")
+    public String updatePost(@PathVariable long id, @RequestParam String title, @RequestParam String body) {
+        Post post = postDao.getOne(id);
+        post.setTitle(title);
+        post.setBody(body);
+        postDao.save(post);
+        return "redirect:/posts";
     }
 
     @PostMapping("/posts/{id}/delete")
