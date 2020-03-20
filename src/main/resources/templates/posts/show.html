@@ -8,7 +8,7 @@
 <nav th:replace="partials/navbar :: navbar"></nav>
 <h1 th:text="${posts.title}"></h1>
 <h4 th:text="${posts.body}"></h4>
-<p>By: <span th:text="${posts.user.email}"></span></p>
+<p>By: <a th:href="'mailto:' + ${posts.user.email}" th:text="${posts.user.email}"></a></p>
 <script th:replace="partials/scripts :: scripts"></script>
 </body>
 </html>

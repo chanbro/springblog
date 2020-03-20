@@ -37,9 +37,17 @@ public class PostController {
         return "posts/create";
     }
 
+//    @PostMapping("/posts/create")
+//    public String submitPost(@RequestParam String title, @RequestParam String body){
+//        Post post = new Post(title, body);
+//        User user = userDao.getOne(1L);
+//        post.setUser(user);
+//        postDao.save(post);
+//        return "redirect:/posts/" + post.getId();
+//    }
+
     @PostMapping("/posts/create")
-    public String submitPost(@RequestParam String title, @RequestParam String body){
-        Post post = new Post(title, body);
+    public String submitPost(@ModelAttribute Post post){
         User user = userDao.getOne(1L);
         post.setUser(user);
         postDao.save(post);
