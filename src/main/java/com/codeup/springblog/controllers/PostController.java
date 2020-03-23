@@ -1,7 +1,11 @@
 package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Post;
+import com.codeup.springblog.models.User;
 import com.codeup.springblog.repositories.PostRepository;
+import com.codeup.springblog.repositories.UserRepository;
+import com.codeup.springblog.services.EmailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +14,15 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostRepository postDao;
+    private final UserRepository userDao;
 
-    public PostController(PostRepository postDao) {
+    public PostController(PostRepository postDao, UserRepository userDao) {
         this.postDao = postDao;
+        this.userDao = userDao;
     }
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/posts")
     public String getPosts(Model model){
@@ -28,18 +37,27 @@ public class PostController {
     }
 
     @GetMapping("/posts/create")
-    @ResponseBody
-    public String getCreatePostForm(Model model){
-        model.addAttribute("posts" , new Post());
+    public String showCreateForm(Model model){
+        model.addAttribute("post" , new Post());
         return "posts/create";
     }
 
-    @PostMapping("/posts/create")
-    @ResponseBody
-    public String createPost(){
-        return "create a new post";
-    }
+//    @PostMapping("/posts/create")
+//    public String submitPost(@RequestParam String title, @RequestParam String body){
+//        Post post = new Post(title, body);
+//        User user = userDao.getOne(1L);
+//        post.setUser(user);
+//        postDao.save(post);
+//        return "redirect:/posts/" + post.getId();
+//    }
 
+    @PostMapping("/posts/create")
+    public String submitPost(@ModelAttribute Post post){
+        User user = userDao.getOne(1L);
+        post.setUser(user);
+        postDao.save(post);
+        return "redirect:/posts/" + post.getId();
+    }
 
     @GetMapping("/posts/update")
     @ResponseBody
@@ -58,11 +76,11 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}/edit")
-    public String updatePost(@PathVariable long id, @RequestParam String title, @RequestParam String body) {
-        Post post = postDao.getOne(id);
-        post.setTitle(title);
-        post.setBody(body);
-        postDao.save(post);
+    public String updatePost(@PathVariable long id, @ModelAttribute Post post) {
+        Post p = postDao.getOne(id);
+        p.setTitle(post.getTitle());
+        p.setBody(post.getBody());
+        postDao.save(p);
         return "redirect:/posts";
     }
 

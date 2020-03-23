@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="">
 <body>
-
-<nav th:fragment="navbar" id="my-nav" class="navbar navbar-default">
+<!--Navbar Fragment-->
+<nav th:fragment="navbar" id="my-nav" class="navbar navbar-default bg-dark">
     <ul class="nav navbar-nav">
-        <li><a href="/posts">Index</a></li>
+        <li><a href="/posts">Home</a></li>
+        <li><a href="/posts/create">New Post</a></li>
+
 <!--        <li>-->
 <!--            <a href="/login">Login</a>-->
 <!--        </li>-->
