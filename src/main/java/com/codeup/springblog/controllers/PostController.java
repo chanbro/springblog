@@ -6,6 +6,7 @@ import com.codeup.springblog.services.EmailService;
 import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +38,11 @@ public class PostController {
         return "posts/show";
     }
 
-    @GetMapping("/posts/create")
-    public String getCreatePostForm(){
-//        model.addAttribute("posts" , new Post());
-        return "posts/create";
-    }
+//    @GetMapping("/posts/create")
+//    public String getCreatePostForm(){
+////        model.addAttribute("posts" , new Post());
+//        return "posts/create";
+//    }
 
 //    @GetMapping("/posts/create")
 //    @ResponseBody
@@ -56,6 +57,14 @@ public class PostController {
 //        emailService.prepareAndSend(newPost, emailSubject, emailBody);
 //        return "Saving post";
 //    }
+
+    @GetMapping("/posts/create")
+    public String createPostForm(Model model){
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(loggedInUser.getUsername());
+        model.addAttribute("post", new Post());
+        return "posts/create";
+    }
 
     @PostMapping("/posts/create")
     public String submitPost(@RequestParam String title, @RequestParam String body){

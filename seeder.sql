@@ -1,4 +1,4 @@
-create database if not exists springblog_db;
+# create database if not exists springblog_db;
 use springblog_db;
 
 insert into users (id, username, email, password) values (1, 'seusden0', 'smcgrey0@cmu.edu', 'eebawPjDG');
