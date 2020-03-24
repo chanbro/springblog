@@ -16,3 +16,4 @@ insert into posts (id, title, body, user_id) values (4, 'Bald Eagle', 'Luctus ne
 
 
 
+

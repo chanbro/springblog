@@ -7,6 +7,7 @@ import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import com.codeup.springblog.services.EmailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class PostController {
         this.userDao = userDao;
         this.emailService = emailService;
     }
+
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping("/posts")
     public String getPosts(Model model){
@@ -66,9 +70,17 @@ public class PostController {
         return "posts/create";
     }
 
+//    @PostMapping("/posts/create")
+//    public String submitPost(@RequestParam String title, @RequestParam String body){
+//        Post post = new Post(title, body);
+//        User user = userDao.getOne(1L);
+//        post.setUser(user);
+//        postDao.save(post);
+//        return "redirect:/posts/" + post.getId();
+//    }
+
     @PostMapping("/posts/create")
-    public String submitPost(@RequestParam String title, @RequestParam String body){
-        Post post = new Post(title, body);
+    public String submitPost(@ModelAttribute Post post){
         User user = userDao.getOne(1L);
         post.setUser(user);
         postDao.save(post);
@@ -92,11 +104,11 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}/edit")
-    public String updatePost(@PathVariable long id, @RequestParam String title, @RequestParam String body) {
-        Post post = postDao.getOne(id);
-        post.setTitle(title);
-        post.setBody(body);
-        postDao.save(post);
+    public String updatePost(@PathVariable long id, @ModelAttribute Post post) {
+        Post p = postDao.getOne(id);
+        p.setTitle(post.getTitle());
+        p.setBody(post.getBody());
+        postDao.save(p);
         return "redirect:/posts";
     }
 

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="partials/header :: head('All Posts')">
@@ -8,12 +7,14 @@
 <body>
 <nav th:replace="partials/navbar :: navbar"></nav>
 <h1>Create a Post</h1>
-<form th:action="@{|/posts/create|}" th:method="POST">
+<form th:action="@{|/posts/create|}" th:method="POST" th:object="${post}">
     <label for="title">Title</label>
-    <input id="title" type="text" name="title" placeholder="Enter title">
+    <input id="title" type="text" th:field="*{title}"
+           placeholder="Enter title">
     <label for="body">Body</label>
-    <textarea id="body" name="body" placeholder="Enter body"></textarea>
-    <button>Create</button>
+    <textarea id="body" th:field="*{body}"
+              placeholder="Enter body"></textarea>
+    <button>Create Post</button>
 </form>
 <script th:replace="partials/scripts :: scripts"></script>
 </body>
