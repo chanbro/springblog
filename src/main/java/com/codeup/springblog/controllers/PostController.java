@@ -2,10 +2,12 @@ package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Post;
 import com.codeup.springblog.models.User;
+import com.codeup.springblog.services.EmailService;
 import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
-import com.codeup.springblog.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.codeup.springblog.services.EmailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,13 @@ public class PostController {
     private final PostRepository postDao;
     private final UserRepository userDao;
 
-    public PostController(PostRepository postDao, UserRepository userDao) {
+    @Autowired
+    private final EmailService emailService;
+
+    public PostController(PostRepository postDao, UserRepository userDao, EmailService emailService) {
         this.postDao = postDao;
         this.userDao = userDao;
+        this.emailService = emailService;
     }
 
     @Autowired
@@ -36,9 +42,31 @@ public class PostController {
         return "posts/show";
     }
 
+//    @GetMapping("/posts/create")
+//    public String getCreatePostForm(){
+////        model.addAttribute("posts" , new Post());
+//        return "posts/create";
+//    }
+
+//    @GetMapping("/posts/create")
+//    @ResponseBody
+//    public String savePost() {
+//        Post newPost = new Post();
+//        newPost.setTitle("New Post");
+//        newPost.setBody("This is a newly saved post!");
+//        newPost.setUser(userDao.getOne(1L));
+//        postDao.save(newPost);
+//        String emailSubject = "This is the email subject";
+//        String emailBody = "Email Body Test";
+//        emailService.prepareAndSend(newPost, emailSubject, emailBody);
+//        return "Saving post";
+//    }
+
     @GetMapping("/posts/create")
-    public String showCreateForm(Model model){
-        model.addAttribute("post" , new Post());
+    public String createPostForm(Model model){
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(loggedInUser.getUsername());
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
