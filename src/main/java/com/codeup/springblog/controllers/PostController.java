@@ -27,9 +27,6 @@ public class PostController {
         this.emailService = emailService;
     }
 
-    @Autowired
-    private EmailService emailService;
-
     @GetMapping("/posts")
     public String getPosts(Model model){
         model.addAttribute("posts", postDao.findAll());
