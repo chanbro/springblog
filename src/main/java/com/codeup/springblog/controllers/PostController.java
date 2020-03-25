@@ -76,12 +76,23 @@ public class PostController {
 //        return "redirect:/posts/" + post.getId();
 //    }
 
+//    @PostMapping("/posts/create")
+//    public String submitPost(@ModelAttribute Post post){
+//        User user = userDao.getOne(1L);
+//        post.setUser(user);
+//        postDao.save(post);
+//        return "redirect:/posts/" + post.getId();
+//    }
+
     @PostMapping("/posts/create")
-    public String submitPost(@ModelAttribute Post post){
-        User user = userDao.getOne(1L);
-        post.setUser(user);
-        postDao.save(post);
-        return "redirect:/posts/" + post.getId();
+    public String createPost(@RequestParam String title, @RequestParam String body ){
+        Post newPost = new Post();
+        newPost.setTitle(title);
+        newPost.setBody(body);
+        User loggedIn = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        newPost.setUser(loggedIn);
+        postDao.save(newPost);
+        return "redirect:/posts";
     }
 
     @GetMapping("/posts/update")
